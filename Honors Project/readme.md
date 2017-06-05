@@ -9,12 +9,12 @@ This is the entire codebase for the MATLAB project which was used to gather data
 
 Download the repository, and add it to your MATLAB folder. The MP3 files will need to be moved to the main folder (they cannot be nested as they currently are). Then, simply run MMM_Master_Script as you would any other MATLAB script. 
 
-Characteristics Analyzed via MATLAB:
+### Characteristics Analyzed via MATLAB:
 - Tempo and Pace
 - Dynamic Expression
 - Key
 
-Countries Analyzed:
+### Countries Analyzed:
 1. USA
 2. Russia
 3. China
