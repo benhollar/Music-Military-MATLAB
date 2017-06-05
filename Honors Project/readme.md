@@ -5,6 +5,10 @@ This project was completed by Ben Hollar, Megan Zuelke, Brennan Thomas, and Mitc
 
 This is the entire codebase for the MATLAB project which was used to gather data in pursuit of answering the question: Does a country's national anthem relate to its military strength?
 
+### How To Run
+
+Download the repository, and add it to your MATLAB folder. The MP3 files will need to be moved to the main folder (they cannot be nested as they currently are). Then, simply run MMM_Master_Script as you would any other MATLAB script. 
+
 Characteristics Analyzed via MATLAB:
 - Tempo and Pace
 - Dynamic Expression
