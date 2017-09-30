@@ -1,6 +1,7 @@
 %MASTER SCRIPT
 
 clear all; close all; clc; commandwindow;
+addpath('MP3 Files');
 disp('Running... Please wait. Will take approximately 1-2 minutes.')
 
 %% Tempo / Pace -- Brennan
