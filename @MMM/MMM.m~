@@ -3,7 +3,7 @@
 classdef MMM < handle
     
     % Class properties. I'm just going to leave them all public. 
-    properties
+    properties (Access = public)
         
         % The root directory of the class.
         %
@@ -27,12 +27,14 @@ classdef MMM < handle
         
     end
     
+    proper
+    
     methods
         
         % Constructor
         function obj = MMM()
-            addpath('MMM Libr
             obj.rootDir = fileparts(fileparts(mfilename('fullpath')));
+            addpath(fullfile(obj.rootDir, 'MMM Library'));
             addpathRecursive(obj.rootDir);
             obj.songList = obj.getSongList();
         end

@@ -8,7 +8,12 @@ function calcKey(obj, fileName)
 %
 % Author: Meghan Zuelke (adapted by Ben Hollar)
 
-[x, fs] = audioread(fileName);
+if isempty(obj.currentSong) || ~strcmp(obj.currentSong.name, fileName)
+    obj.currentSong(1).name = fileName;
+    [obj.currentSong.x, obj.currentSong.fs] = audioread(fileName);
+end
+x = obj.currentSong.x;
+fs = obj.currentSong.fs;
 
 Nsamps = length(x);
 y_fft = abs(fft(x));
@@ -16,6 +21,7 @@ y_fft = y_fft(1:Nsamps/2);
 f = fs*(0:Nsamps/2-1)/Nsamps;
 
 % Print out first 20 most common frequencies
+freq = zeros(1,20);
 for k = 1:20
 	note = f(find(y_fft == max(y_fft))); %Find the most frequent pitch
 	y_fft(find(y_fft == max(y_fft))) = [];
@@ -24,6 +30,7 @@ end
 
 %convert frequencies into notes - number of half steps away from A = 440 Hz
 fo = 440; %reference frequency
+half_steps = zeros(1,20);
 for m = 1:20
     half_steps(m) = round((log(freq(m)/fo))/log(2^(1/12)),0);
     while half_steps(m)<0 %to prevent negative notes
@@ -36,6 +43,7 @@ end
 half_steps = sort(half_steps); %order the notes
 
 %count steps between notes
+count = zeros(1,20);
 for k = 2:20
     count(k) = half_steps(k) - half_steps(1);
 end

@@ -9,7 +9,12 @@ function calcTempo(obj, fileName)
 % Author: Brennan Thomas (adapted by Ben Hollar)
 
 % Read the audio file and extract the first channel
-[d,sr] = audioread(fileName);
+if isempty(obj.currentSong) || ~strcmp(obj.currentSong.name, fileName)
+    obj.currentSong(1).name = fileName;
+    [obj.currentSong.x, obj.currentSong.fs] = audioread(fileName);
+end
+d = obj.currentSong.x;
+sr = obj.currentSong.fs;
 d = d(:,1);
 
 % Use the library to detect possible tempos

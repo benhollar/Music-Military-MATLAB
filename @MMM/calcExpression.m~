@@ -10,12 +10,13 @@ function calcExpression(obj, fileName)
 % Author: Ben Hollar
 
 %% Startup
-if isempty(obj.currentSong) || ~strcmp(obj.currentSong.name, fileName)
-    obj.currentSong(1).name = fileName;
-    [obj.currentSong.x, obj.currentSong.fs] = audioread(fileName);
+if strcmp(obj.currentSong.name, fileName)
+    x = obj.currentSong.x;
+    fs = obj.currentSong.sr;
+else
+    [obj.currentSong.x, fs] = audioread(fileName);
 end
-x = obj.currentSong.x;
-fs = obj.currentSong.fs;
+[x, fs] = audioread(fileName);
 
 x = x(:, 1);                                  % get the first channel
 N = length(x);                                % signal length

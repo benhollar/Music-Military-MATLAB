@@ -2,13 +2,9 @@
 
 classdef MMM < handle
     
-    % Class properties. I'm just going to leave them all public. 
-    properties
-        
-        % The root directory of the class.
-        %
-        % This is useful for path setup and for locating MP3 files.
-        rootDir;
+    % Class properties. These can be public, since users may want to see
+    % them in their workspace.
+    properties (Access = public)
         
         % List of all the MP3 audio files.
         songList;
@@ -24,6 +20,21 @@ classdef MMM < handle
          
         % Table of results
         resultTable;
+        
+    end
+    
+    properties (Hidden = true)
+        
+        % The root directory of the class.
+        %
+        % This is useful for path setup and for locating MP3 files.
+        rootDir;
+        
+        % Current song information
+        currentSong = struct('name', '',...
+                             'x', {},...
+                             'fs', {}...
+                            );
         
     end
     
