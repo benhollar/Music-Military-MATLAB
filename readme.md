@@ -42,4 +42,11 @@ obj.doAnalysis();
 20. Palau
 21. North Korea
 
-For more information about the project, please visit [benhollar.com](http://www.benhollar.com/all/uhp/music-military-matlab/).
+### Can I analyze other songs?
+Sure can! If you're using the latest commit, this should work easily -- simply add the MP3 file you'd like to analyze into the MP3 files folder.
+
+If you're using v1.0 (the original code), this is not as simple, but still possible. It would require both adding the song to the MP3 files folder and then directly calling the proper functions, or modifying MMM_Master_Script to include the new song.
+
+## I have more questions.
+
+For more information about the project, please visit [benhollar.com](http://www.benhollar.com/all/uhp/music-military-matlab/). Feel free to contact me directly -- you should find my contact information on the website.
