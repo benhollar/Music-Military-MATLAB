@@ -37,4 +37,4 @@ Download the repository, and add it to your MATLAB folder. Then, simply run MMM_
 20. Palau
 21. North Korea
 
-For more information about the project, please visit [benhollar.weebly.com](http://www.benhollar.weebly.com/music-military-matlab).
+For more information about the project, please visit [benhollar.com](http://www.benhollar.com/all/uhp/music-military-matlab/).
