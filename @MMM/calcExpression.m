@@ -1,19 +1,22 @@
-function [score] = MMM_Dynamics_Function( x, fs, country )
-
-%Something about what this does. Derived from Decibel_Practice3
-
-%MAKE A COMPILED RANKING WHICH TAKES IN TO ACCOUNT NUMBER OF CHANGES,
-%TRENDS, ETC. 
-
-%Usage: MMM_Dynamics_Function( x, fs, country )
+function calcExpression(obj, fileName)
+% This function calculates an expression "score", based upon a mixture of
+% sharp dynamic changes, gradual dynamic changes, and overall dynamic
+% range. Higher values are more expressive.
+%
+% Inputs:
+%   obj: MMM object
+%   fileName: filename of MP3 file to analyze
+%
+% Author: Ben Hollar
 
 %% Startup
+[x, fs] = audioread(fileName);
+
 x = x(:, 1);                                  % get the first channel
 N = length(x);                                % signal length
 t = (0:N-1)/fs;                               % time vector
 X = mag2db(abs(nonzeros(x))); X = rot90(X);   % creates vector X of dB values for whole song
 
-figure('Name',country)
 %% Dynamic Range of Raw Data
 maxval = max(x);
 minval = min(x);
@@ -182,99 +185,21 @@ if increasing_location(rows1,cols1) == 0
     increasing_location(rows1,cols1) = t(length(t));
 end
 
-%% OUTPUT 
-
-% %Output Song Length
-% fprintf('The song is %0.2f seconds long. \n\n',t(length(t)))
-% 
-% 
-% % %Output soft2loud & loud2soft
-% % if count_soft2loud ~= 0
-% % disp('Soft --> Loud'); disp(soft2loud);
-% % end
-% % if count_loud2soft ~= 0
-% % disp('Loud --> Soft'); disp(loud2soft);
-% % end
-% 
-% 
-% %Output # of sharp dynamic changes
-% fprintf('Number of sharp dynamic changes: %i \n\n',count_loud2soft + count_soft2loud)
-% 
-% 
-% %Output avgdB,lowdB,highdB, Dynamic Range
-% % fprintf('Lowest volume of the song:  %0.2f dB \n',lowdB)
-% % fprintf('Average volume of the song: %0.2f dB \n',avgdB)
-% % fprintf('Highest volume of the song: %0.2f dB \n',highdB)
-% fprintf('Dynamic Range: %02.f dB \n\n',rangeMax)
-% 
-% %Outputs Loudest and Quietest Sections & Compares them to Avg
-% quietSection = find(mean_over_interval == min(mean_over_interval));
-% fprintf('The quietest section occurs from %0.1f to %0.1f seconds. This is %0.1f dB -- %0.1f%% -- quieter than average.\n',(quietSection-0.5)*chunkTime,(quietSection+0.5)*chunkTime,avgdB-min(mean_over_interval),(avgdB-min(mean_over_interval))/abs(avgdB) * 100)
-% loudSection  = find(mean_over_interval == max(mean_over_interval));
-% fprintf('The loudest  section occurs from %0.1f to %0.1f seconds. This is %0.1f dB -- %0.1f%% -- louder than average. \n\n',(loudSection -0.5)*chunkTime,(loudSection +0.5)*chunkTime,max(mean_over_interval)-avgdB,(max(mean_over_interval)-avgdB)/abs(avgdB) * 100)
-% 
-% %Output # Louder Sections, # Softer Sections
-% fprintf('Number of sections louder than average: %i \n',length(find(mean_over_interval > avgdB)))
-% fprintf('Number of sections softer than average: %i \n\n',length(find(mean_over_interval < avgdB)))
-% 
-% %Output Crescendos and Decrescendo Times
-% fprintf('The song decrescendos on these intervals:\n')
-% disp(decreasing_location)
-% fprintf('The song crescendos on these intervals:\n')
-% disp(increasing_location)
-
 %% SCORING -- probably needs tweaked
 
 score = count_loud2soft + count_soft2loud;                                     %sharp dynamic changes
 score = score + rangeMax;                                                      %dynamic range
 score = score + avgdB-min(mean_over_interval) + max(mean_over_interval)-avgdB; %deviance in softest / loudest sections
 score = score + abs((length(find(mean_over_interval > avgdB))) - (length(find(mean_over_interval < avgdB))));  %sections louder - sections quieter
-[r,c] = size(decreasing_location); 
+[r,~] = size(decreasing_location); 
 score = score + r;                 %number of decreasing intervals
-[r,c] = size(increasing_location);
+[r,~] = size(increasing_location);
 score = score + r;                 %number of increasing intervals
 
-%disp('Score:'); disp(score);
-%% Plotting
-
-n = 1;
-alteredMaxSong = zeros(1,length(X));
-for k = 1:length(maxSong)
-  alteredMaxSong(n) = maxSong(k);
-  n = n + round(length(alteredMaxSong) / length(maxSong));
+if isempty(obj.evalOutput)
+    obj.evalOutput(1).expression{1} = score;
+else
+    obj.evalOutput.expression = [obj.evalOutput.expression; score];
 end
-
-subplot(2,2,1)
-plot(t(1:length(X)),X)
-axis([0 max(t) -dynamicRange 0])
-title('Original Data -- Raw Audio File')
-
-subplot(2,2,2)
-plot(t(1:length(maxSong)),maxSong)
-axis([0 t(length(maxSong)) -dynamicRange 0])
-title('Averaged Data -- Peak Volumes of Audio File over specified time interval')
-
-subplot(2,2,3)
-for k = 1:length(alteredMaxSong)
-    if alteredMaxSong(k) ~= 0 
-       plot(t(k),alteredMaxSong(k),'cx')
-       hold on
-       axis([0 max(t) -dynamicRange 0])
-       grid on 
-    end
-end
-plot([0 t(round(length(t)/chunks))],[mean_over_interval(1) mean_over_interval(1)],'r')
-for k = 2:length(mean_over_interval)
-   plot([t(round(length(t)/chunks))*(k-1) t(round(length(t)/chunks))*k],[mean_over_interval(k) mean_over_interval(k)],'r') 
-end
-title('Data Points from Plot 2 & Mean Volume Over Longer Intervals')
-hold off
-
-subplot(2,2,4)
-plot(x,polyAns)
-axis([0 (length(maxSong)) -dynamicRange 0])
-title('PolyFit of Figure 2')
-
-fprintf('\n')
 
 end

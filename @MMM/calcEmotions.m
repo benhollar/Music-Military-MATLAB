@@ -1,7 +1,20 @@
-function [Emotions] = MMM_Emotions_Function( Key, Pace, Dynamics )
+function calcEmotions(obj)
+% Using a composite of our calculated pace, key, and dynamics, we can
+% calculate an "emotion" of each song. See the research poster for more
+% information.
+%
+% Inputs:
+%   obj: MMM object
+%
+% Author: Ben Hollar
 
-Emotions = cell(21,1);
-flowchartEmotions = {'Animated','Joyful','Strong','Triumphant','Heroic','Relaxed','Inspired','Transcendant','Dreamy'; 'Tense','Irritated','Nervous','Agitated','Impatient','Nervous','Sorrowful','Sad','Melancholy'}
+flowchartEmotions = {'Animated','Joyful','Strong','Triumphant','Heroic',...
+    'Relaxed','Inspired','Transcendant','Dreamy'; 'Tense','Irritated',...
+    'Nervous','Agitated','Impatient','Nervous','Sorrowful','Sad','Melancholy'};
+
+Key = obj.evalOutput.key;
+Pace = obj.evalOutput.pace;
+Dynamics = obj.evalOutput.dynamics;
 
 for k = 1:length(Key)
     %% a bunch of if statements to go through the flowchart, narrowing possible emotions
@@ -29,9 +42,12 @@ for k = 1:length(Key)
     end
            
     %% Store determined emotion / reset for next loop
-    Emotions(k,1) = possibleEmotions(1,1);
-    possibleEmotions = flowchartEmotions;
+    if isempty(obj.evalOutput.emotion)
+        obj.evalOutput.emotion = possibleEmotions(1,1);
+    else
+        obj.evalOutput.emotion = [obj.evalOutput.emotion; possibleEmotions(1,1)];
+    end
+    
 end
-
 
 end

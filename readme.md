@@ -7,7 +7,12 @@ This is the entire codebase for the MATLAB project which was used to gather data
 
 ### How To Run
 
-Download the repository, and add it to your MATLAB folder. Then, simply run MMM_Master_Script as you would any other MATLAB script. 
+Download the repository, and add it to your MATLAB folder. The repository should retain the same folder structure for the automatic pathing to work.
+
+Once downloaded, simply add MMM.m to your path and run it to create the object. To recreate our original output, do the following:
+
+obj = MMM();
+obj.doAnalysis();
 
 ### Characteristics Analyzed via MATLAB:
 - Tempo and Pace
