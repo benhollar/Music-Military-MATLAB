@@ -49,4 +49,4 @@ If you're using v1.0 (the original code), this is not as simple, but still possi
 
 ### I have more questions.
 
-For more information about the project, please visit [benhollar.com](http://www.benhollar.com/all/uhp/music-military-matlab/). Feel free to contact me directly -- you should find my contact information on the website.
+For more information about the project, please visit [benhollar.com](http://www.benhollar.com/posts/music-military-matlab/). Feel free to contact me directly -- you should find my contact information on the website.
